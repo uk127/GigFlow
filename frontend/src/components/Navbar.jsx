@@ -38,7 +38,7 @@ const Navbar = () => {
   useEffect(() => {
     if (user && !socketRef.current) {
       console.log('Navbar: Initializing socket connection for user:', user._id);
-      socketRef.current = io('http://localhost:5000');
+      socketRef.current = io(import.meta.env.VITE_SOCKET_URL);
 
       socketRef.current.on('connect', () => {
         console.log('Navbar: Socket connected');

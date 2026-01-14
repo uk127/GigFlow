@@ -26,7 +26,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (user) {
       // Set up real-time socket connection
-      const socket = io('http://localhost:5000');
+      const socket = io(import.meta.env.VITE_SOCKET_URL);
 
       // Join user's room for notifications
       socket.emit('joinUserRoom', user._id);
