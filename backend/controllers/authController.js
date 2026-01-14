@@ -27,8 +27,8 @@ export const register = async (req, res) => {
 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: true,            // Must be HTTPS
-      sameSite: 'none',        // Cross-site cookies
+      secure: process.env.NODE_ENV === 'production', // must be HTTPS in production
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // cross-site cookies
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -64,9 +64,9 @@ export const login = async (req, res) => {
 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: true,       // HTTPS only
-      sameSite: 'none',   // Cross-site
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      secure: process.env.NODE_ENV === 'production', // must be HTTPS in production
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // cross-site cookies
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     res.json({
@@ -81,9 +81,9 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
   res.cookie('token', '', {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none',
+     httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // must be HTTPS in production
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // cross-site cookies
     expires: new Date(0)
   });
 
