@@ -30,6 +30,7 @@ export const register = async (req, res) => {
       secure: process.env.NODE_ENV === 'production', // must be HTTPS in production
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // cross-site cookies
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      domain: 'gig-flow-7t94.onrender.com', // backend domain
     });
 
     res.status(201).json({
