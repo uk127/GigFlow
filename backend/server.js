@@ -17,7 +17,7 @@ const server = createServer(app);
 const io = new Server(server, {
   cors: {
     origin: process.env.NODE_ENV === 'production'
-      ? ['https://your-production-domain.com']
+      ? [process.env.CLIENT_URL]
       : ['http://localhost:5173', 'http://localhost:5174'],
     credentials: true
   }
@@ -27,7 +27,7 @@ connectDB();
 
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
-    ? ['https://your-production-domain.com']
+    ? [process.env.CLIENT_URL]
     : ['http://localhost:5173', 'http://localhost:5174'],
   credentials: true
 }));
