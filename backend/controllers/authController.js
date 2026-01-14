@@ -7,6 +7,14 @@ const generateToken = (userId) => {
   });
 };
 
+const COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: true,                             // HTTPS only
+  sameSite: 'none',                         // cross-site cookies
+  domain: process.env.BACKEND_DOMAIN,       // backend domain
+  maxAge: 7 * 24 * 60 * 60 * 1000,          // 7 days
+};
+
 export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -25,13 +33,7 @@ export const register = async (req, res) => {
 
     const token = generateToken(user._id);
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // must be HTTPS in production
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // cross-site cookies
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      domain: 'gig-flow-7t94.onrender.com', // backend domain
-    });
+    res.cookie('token', token, COOKIE_OPTIONS);
 
     res.status(201).json({
       message: 'User registered successfully',
@@ -63,12 +65,7 @@ export const login = async (req, res) => {
 
     const token = generateToken(user._id);
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // must be HTTPS in production
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // cross-site cookies
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    });
+    res.cookie('token', token, COOKIE_OPTIONS);
 
     res.json({
       message: 'Login successful',
@@ -82,9 +79,7 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
   res.cookie('token', '', {
-     httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // must be HTTPS in production
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // cross-site cookies
+    ...COOKIE_OPTIONS,
     expires: new Date(0)
   });
 
